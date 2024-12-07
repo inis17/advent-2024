@@ -12,13 +12,24 @@ for line in file:
         continue
     update = list(map(int, line.strip().split(',')))
     isValid = True
-    for idx, elem in enumerate(update):
-        rule = rules[elem]
-        for n in range(0, idx):
-            if update[n] in rule:
-                isValid = False
-                break
-    if isValid:
+    notClean = True
+    while notClean:
+        notClean = False
+        for elem in update:
+            idx = update.index(elem)
+            rule = rules[elem]
+            for n in range(0, idx):
+                if update[n] == elem:
+                    break
+                if update[n] in rule:
+                    isValid = False
+                    moved = update[n]
+                    update.insert(idx + 1, moved)
+                    update.pop(n)
+                    n = n-1
+                    notClean = True
+    if not isValid:
+        print(update)
         mid = int(len(update)/2)
         result += update[mid]
 

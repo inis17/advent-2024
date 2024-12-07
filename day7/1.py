@@ -1,0 +1,12 @@
+file = open('example.txt')
+left_list = []
+right_list = []
+for line in file:
+    a = line.split()
+    left_list.append(int(a[0]))
+    right_list.append(int(a[1]))
+left_list.sort()
+right_list.sort()
+
+diff = sum(abs(a-b) for a, b in zip(right_list, left_list))
+print(diff)
