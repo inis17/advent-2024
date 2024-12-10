@@ -16,7 +16,7 @@ for line in file:
 curs = 0
 for idx in range(len(files) - 1, -1, -1):
     end = False
-    e = files(idx)
+    e = files[idx]
     for i, b in enumerate(blank):
         if b[0] > e[0]:
             end = True
@@ -28,6 +28,16 @@ for idx in range(len(files) - 1, -1, -1):
             e[1] = -1
     if end:
         continue
-
+result = []
+i = 0
+j = 0
 print(files)
 print(blank)
+while i < len(files) and j < len(blank):
+    if files[i][0] < blank[j][0]:
+        i += 1
+        result += [files[i][1]] * files[i][2]
+    if files[i][0] > blank[j][0]:
+        j += 1
+        result += [blank[i][1]] * blank[i][2]
+print(result)
