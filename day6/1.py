@@ -35,7 +35,7 @@ for line in file:
             col = line.index(elem)
             row = len(grid)
             break
-    grid.append(list(line.strip()))
+    grid.extend(list(line.strip()))
 width = len(grid[0])
 height = len(grid)
 startRow = row
@@ -67,7 +67,7 @@ while not isOut:
         continue
     if grid[nextRow][nextCol] != obstacle:
         if grid[nextRow][nextCol] != 0:
-            possibleRowCol.append([nextRow, nextCol])
+            possibleRowCol.extend([nextRow, nextCol])
         grid[nextRow][nextCol] = 0
         row = nextRow
         col = nextCol

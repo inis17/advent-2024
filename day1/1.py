@@ -3,8 +3,8 @@ left_list = []
 right_list = []
 for line in file:
     a = line.split()
-    left_list.append(int(a[0]))
-    right_list.append(int(a[1]))
+    left_list.extend(int(a[0]))
+    right_list.extend(int(a[1]))
 left_list.sort()
 right_list.sort()
 

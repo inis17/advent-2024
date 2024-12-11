@@ -18,7 +18,7 @@ file = open('input.txt')
 matrix = []
 result = 0
 for line in file:
-    matrix.append(line)
+    matrix.extend(line)
 for i, row in enumerate(matrix):
     for j, col in enumerate(row):
         if col == 'A':

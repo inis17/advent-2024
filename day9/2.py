@@ -1,43 +1,34 @@
-file = open('example.txt')
+from itertools import chain
+file = open('input.txt')
 storage = []
-blank = []
-files = []
 for line in file:
     id = 0
-    idx = 0
     for i, c in enumerate(line.strip()):
         if i % 2 == 0:  # is even
-            files.append([idx, id, int(c)])
+            storage.extend([id] * int(c))
             id += 1
-            idx += int(c)
         if i % 2 == 1:
-            blank.append([idx, -1, int(c)])
-            idx += int(c)
-curs = 0
-for idx in range(len(files) - 1, -1, -1):
-    end = False
-    e = files[idx]
-    for i, b in enumerate(blank):
-        if b[0] > e[0]:
-            end = True
-            break
-        if e[2] <= b[2]:
-            b[0] += e[2]
-            b[2] -= e[2]
-            files.insert(i+1+curs, [i+1+curs, e[1], e[2]])
-            e[1] = -1
-    if end:
+            storage.extend([-1] * int(c))
+
+for i in range(len(storage)-1, -1, -1):
+    eli = storage[i]
+    if len(eli) < 1:
         continue
-result = []
-i = 0
-j = 0
-print(files)
-print(blank)
-while i < len(files) and j < len(blank):
-    if files[i][0] < blank[j][0]:
-        i += 1
-        result += [files[i][1]] * files[i][2]
-    if files[i][0] > blank[j][0]:
-        j += 1
-        result += [blank[i][1]] * blank[i][2]
+    if eli[0] == -1:
+        continue
+    n = len(eli)
+    for j, elj in enumerate(storage):
+        if j > i:
+            break
+        if len(elj) < n:
+            continue
+        if elj[0] != -1:
+            continue
+        storage[j] = storage[j][:-n]
+        storage[i] = [-1] * len(eli)
+        storage.insert(j, eli)
+        break
+
+result = sum([value * index for index,
+              value in enumerate(list(chain.from_iterable(storage))) if value >= 0])
 print(result)

@@ -8,7 +8,7 @@ for line in file:
             storage += [id] * int(c)
             id += 1
         if i % 2 == 1:
-            blank.append([len(storage), int(c)])
+            blank.extend([len(storage), int(c)])
             storage += [-1] * int(c)
 blk_index = 0
 curs = 0

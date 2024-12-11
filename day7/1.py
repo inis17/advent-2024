@@ -30,7 +30,7 @@ for line in file:
     result, *num = map(int, re.findall('\d+', line))
     operation = ['+', '*', '|']
     if calc(num[0], num[slice(1, len(num))], operation, result):
-        tot.append(result)
+        tot.extend(result)
 
 
 print(sum(tot))

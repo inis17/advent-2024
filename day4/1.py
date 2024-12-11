@@ -60,7 +60,7 @@ matrix = []
 result = 0
 for line in file:
     # NOTE: The matrix is inverted (line are accessed with j instead of i)
-    matrix.append(line)
+    matrix.extend(line)
 for i, row in enumerate(matrix):
     for j, col in enumerate(row):
         if col == 'X':

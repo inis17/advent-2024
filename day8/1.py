@@ -5,7 +5,7 @@ result = 0
 grid = []
 antennas = defaultdict(list)
 for i, line in enumerate(file):
-    grid.append(list(line.strip()))
+    grid.extend(list(line.strip()))
     for j, char in enumerate(line.strip()):
         if char == '.':
             continue
