@@ -44,17 +44,18 @@ def moveVerticaly(pos, dir, grid):
         movingPositions1 += moveVerticaly(nPos1, dir, grid)
         movingPositions2 += moveVerticaly(upPos(nPos1, (0, 1)), dir, grid)
         if len(movingPositions1) != 0 and len(movingPositions2) != 0:
-            movingPositions += [pos] + movingPositions1 + movingPositions2
+            movingPositions += movingPositions2 + movingPositions1 + [pos]
         return movingPositions
     if getAt(grid, nPos1) == ']':
         movingPositions1 += moveVerticaly(nPos1, dir, grid)
         movingPositions2 += moveVerticaly(upPos(nPos1, (0, -1)), dir, grid)
         if len(movingPositions1) != 0 and len(movingPositions2) != 0:
-            movingPositions += [pos] + movingPositions1 + movingPositions2
-        return movingPositions
+            movingPositions += movingPositions2 + movingPositions1 + [pos]
+            return movingPositions
+    return movingPositions
 
 
-file = open('example.txt')
+file = open('input.txt')
 result = 0
 grid = []
 orders = ''
@@ -89,22 +90,25 @@ direction_map = {
     '^': (-1, 0),  # Up
     'v': (1, 0)    # Down
 }
-for o in orders:
+for idx, o in enumerate(orders):
     dir = direction_map[o]
-    positions = move(robot, dir, grid)
+    positions = list(dict.fromkeys(move(robot, dir, grid)))
     for pos in positions:
         setAt(getAt(grid, pos), grid, upPos(pos, dir))
-    if len(pos) > 0:
+        setAt('.', grid, pos)
+
+    if len(positions) > 0:
         setAt('.', grid, robot)
         robot = upPos(robot, dir)
 
-    for i, row in enumerate(grid):
-        a = ''
-        for j, char in enumerate(row):
-            a += char
-            if char == '[':
-                result += i*100 + j
-        print(a)
-    input("Press Enter to continue...")
+for i, row in enumerate(grid):
+    a = ''
+    for j, char in enumerate(row):
+        a += char
+        if char == '[':
+            result += i*100 + j
+    print(a)
+    # print(idx)
+    # input("Press Enter to continue...")
 
 print(result)
