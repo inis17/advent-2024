@@ -1,61 +1,67 @@
+from collections import defaultdict
+from itertools import permutations
 file = open('example.txt')
 result = 0
 keypad = [['7', '8', '9'],
           ['4', '5', '6'],
           ['1', '2', '3'],
           ['#', '0', 'A']]
-
+keys = '0123456789A'
 arrowPad = [['#', '^', 'A'],
             ['<', 'v', '>']]
+arrows = '<>v^A'
 
 
-def find2d(item, matrix):
-    for i, row in enumerate(matrix):
+def findPos(item, grid):
+    for i, row in enumerate(grid):
         for j, char in enumerate(row):
-            if char == item:
+            if item == char:
                 return (i, j)
     return (-1, -1)
 
 
-def findmvt(startPos, endPos):
-    mvmt = ''
-    di = endPos[0] - startPos[0]
-    dj = endPos[1] - startPos[1]
-    if di > 0:
-        mvmt += 'v' * di
-    elif di < 0:
-        mvmt += '^' * (-di)
-    if dj > 0:
-        mvmt += '>' * dj
-    elif dj < 0:
-        mvmt += '<' * (-dj)
-    return mvmt
+def checkValid(start, comb, grid):
+    i = start[0]
+    j = start[1]
+    for c in comb:
+        if c == 'v':
+            i += 1
+        if c == '^':
+            i -= 1
+        if c == '>':
+            j += 1
+        if c == '<':
+            j -= 1
+        if grid[i][j] == '#':
+            print('non valid:', start, comb)
+            return False
+    return True
 
 
-def createSeq(seq, startPos, grid):
-    start = startPos
-    end = (0, 0)
-    r = ''
-    for char in seq:
-        end = find2d(char, grid)
-        r += findmvt(start, end)
-        r += 'A'
-        start = end
-    return r
+def createKeyPadMap():
+    padMap = defaultdict(list)
+    perms = list(permutations(keys, 2))
+    for p in perms:
+        start = findPos(p[0], keypad)
+        end = findPos(p[1], keypad)
+        di = end[0] - start[0]
+        dj = end[1] - start[1]
+
+        vi = '^'
+        if di > 0:
+            vi = 'v'
+        vj = '<'
+        if dj > 0:
+            vj = '>'
+        combinations = set(permutations(vi*abs(di)+vj*abs(dj)))
+        combinations = {
+            c for c in combinations if checkValid(start, c, keypad)}
+    print(p)
+
+
+createKeyPadMap()
+a = 3
 
 
 for line in file:
-    print(line.strip())
-    startPosKeypad = (3, 2)
-    startPosArrow = (0, 2)
-    endPos = (0, 0)
-    seq = createSeq(line.strip(), startPosKeypad, keypad)
-    print(seq)
-    seq = createSeq(seq, startPosArrow, arrowPad)
-    print(seq)
-    seq = createSeq(seq, startPosArrow, arrowPad)
-    print(seq)
-    print(len(seq))
-
-    result += len(seq)*int(line[0:3])
-print(result)
+    pass
